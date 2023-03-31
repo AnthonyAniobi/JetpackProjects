@@ -55,7 +55,9 @@ fun DefaultPreview() {
 fun HomeScreen(){
     Box(modifier=Modifier.background(color = Color.White)){
         Image(
-            modifier= Modifier.fillMaxWidth().offset(0.dp, (-30).dp),
+            modifier= Modifier
+                .fillMaxWidth()
+                .offset(0.dp, (-30).dp),
             painter = painterResource(id = R.drawable.bg_main),
             contentDescription = "Header Background",
             contentScale = ContentScale.FillWidth
@@ -116,7 +118,7 @@ fun Content(paddingValues: PaddingValues){
 fun Header(){
     Card(modifier = Modifier
         .height(64.dp)
-        .padding(horizontal=16.dp),
+        .padding(horizontal = 16.dp),
         elevation = 4.dp,
         shape = RoundedCornerShape(8.dp)
     ){
@@ -125,7 +127,41 @@ fun Header(){
                 .fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ){
-
+            QRButton()
+            VerticalDivider()
         }
     }
+}
+
+@Composable
+fun QRButton() {
+    IconButton(
+        onClick={},
+        modifier = Modifier
+            .fillMaxHeight()
+            .aspectRatio(1f)
+    ){
+        Icon(
+            painter = painterResource(id = R.drawable.ic_scan),
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        )
+    }
+}
+
+@Composable
+fun VerticalDivider() {
+    Divider(
+        modifier = Modifier
+            .width(1.dp)
+            .height(32.dp)
+                
+    )
+}
+
+@Composable
+fun MoneyStats() {
+    
 }
