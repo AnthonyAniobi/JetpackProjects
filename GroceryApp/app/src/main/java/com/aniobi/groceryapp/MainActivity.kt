@@ -3,9 +3,7 @@ package com.aniobi.groceryapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +20,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,7 +57,9 @@ fun DefaultPreview() {
 
 @Composable
 fun HomeScreen(){
-    Box(modifier=Modifier.background(color = Color.White)){
+    Box(modifier= Modifier
+        .background(color = Color.White)
+        .verticalScroll(rememberScrollState())){
         Image(
             modifier= Modifier
                 .fillMaxWidth()
@@ -66,12 +68,12 @@ fun HomeScreen(){
             contentDescription = "Header Background",
             contentScale = ContentScale.FillWidth
         )
-        Scaffold(
-            topBar = { AppBar() },
-            backgroundColor = Color.Transparent
-        ) { paddingValues ->
-            Content(paddingValues)
+        Column() {
+            AppBar()
+            Content()
         }
+
+
     }
 }
 
@@ -112,13 +114,16 @@ fun AppBar(){
 }
 
 @Composable
-fun Content(paddingValues: PaddingValues){
-    Column(modifier= Modifier.padding(paddingValues)) {
+fun Content(){
+    Column() {
         Header()
         Spacer(modifier = Modifier.height(16.dp))
         Promotions()
         Spacer(modifier = Modifier.height(16.dp))
         CategorySection()
+        Spacer(modifier = Modifier.height(16.dp))
+        BestSellerSection()
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
@@ -275,7 +280,7 @@ fun CategorySection(){
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Text("Category", style = MaterialTheme.typography.h6)
+            Text("Category", style = MaterialTheme.typography.h6, color= Color.Black)
             TextButton(onClick = {}) {
                 Text(text="More", color=MaterialTheme.colors.primary)
             }
@@ -289,6 +294,21 @@ fun CategorySection(){
                 icon = painterResource(id = R.drawable.ic_orange),
                 backgroundColor = Color(0xFFFEF4E7),
             )
+            CategoryButton(
+                text = "Vegetable",
+                icon = painterResource(id = R.drawable.ic_veg),
+                backgroundColor = Color(0xFFF6F8F3),
+            )
+            CategoryButton(
+                text = "Diary",
+                icon = painterResource(id = R.drawable.ic_cheese),
+                backgroundColor = Color(0xFFFFFBF3),
+            )
+            CategoryButton(
+                text = "Meats",
+                icon = painterResource(id = R.drawable.ic_meat),
+                backgroundColor = Color(0xFFF6E6E9),
+            )
         }
     }
 }
@@ -301,16 +321,115 @@ fun CategoryButton(
 ) {
     Column(
         modifier = Modifier
-            .width(64.dp)
+            .width(72.dp)
             .clickable { }
     ) {
         Box(
-            modifier = Modifier.size(64.dp)
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(72.dp)
                 .background(
-                    color=backgroundColor,
+                    color = backgroundColor,
                     shape = RoundedCornerShape(12.dp),
-                ),
+                )
+                .padding(12.dp),
 
-        )
+        ){
+            Image(painter = icon, contentDescription = "", modifier=Modifier.fillMaxSize())
+        }
+        Text(text= text,fontSize=14.sp, color=Color.Black,  modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
     }
 }
+
+@Composable
+fun BestSellerSection(){
+    Column() {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Text("Best Sellers", style = MaterialTheme.typography.h6, color=Color.Black)
+            TextButton(onClick = {}) {
+                Text(text="More", color=MaterialTheme.colors.primary)
+            }
+        }
+        BestSellerItems()
+    }
+}
+
+@Composable
+fun BestSellerItems() {
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ){
+        item{
+            BestSellerItem(
+                imagePainter = painterResource(id = R.drawable.item_lettuce),
+                title = "Iceberg lettuce",
+                price = "1.99",
+                discountPercent = 10
+            )
+        }
+        item{
+            BestSellerItem(
+                imagePainter = painterResource(id = R.drawable.item_apple),
+                title = "Apple",
+                price = "2.65",
+                discountPercent = 5
+            )
+        }
+        item{
+            BestSellerItem(
+                imagePainter = painterResource(id = R.drawable.item_meat),
+                title = "Meat",
+                price = "4.76",
+                discountPercent = 20
+            )
+        } 
+    }
+}
+
+
+@Composable
+fun BestSellerItem(
+    title: String = "",
+    price: String = "",
+    discountPercent: Int = 0,
+    imagePainter: Painter,
+){
+    Card(
+        modifier = Modifier
+            .width(160.dp)
+    ){
+        Column (
+            modifier = Modifier.padding(bottom = 32.dp)
+                ){
+            Image(painter = imagePainter, contentDescription = "", modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f),
+                contentScale = ContentScale.Fit,
+                )
+            Column(
+                modifier = Modifier.padding(horizontal = 8.dp)
+            ) {
+                Text(text = title, fontWeight = FontWeight.Bold, color = Color.Black)
+                Row {
+                    Text(
+                        "$${price}",
+                        textDecoration = if (discountPercent > 0) TextDecoration.LineThrough else TextDecoration.None,
+                        color = if (discountPercent > 0) Color.Black else Color.Gray
+
+                    )
+                    if (discountPercent > 0) {
+                        Text("[$discountPercent%]", color = MaterialTheme.colors.primary)
+                    }
+                }
+            }
+        }
+    }
+}
+
