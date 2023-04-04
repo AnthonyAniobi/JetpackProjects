@@ -35,7 +35,6 @@ import com.aniobi.cleaningapp.ui.theme.Purplish
 @Composable
 fun LoginPage1(){
     Box{
-
         BgMain()
         MainScreen()
     }

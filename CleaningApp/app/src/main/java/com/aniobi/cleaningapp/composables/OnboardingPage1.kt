@@ -1,7 +1,9 @@
 package com.aniobi.cleaningapp.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -50,24 +53,42 @@ fun BgMain2() {
             modifier = Modifier.offset(y=(-30).dp)
         ) {
             Row(){
-                Image(painter = painterResource(id = R.drawable.ic_fb), contentDescription = "")
+                Box(modifier = Modifier
+                    .background(Color.Gray)
+                    .size(10.dp)
+                    .clip(CircleShape))
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-                Image(painter = painterResource(id = R.drawable.ic_google), contentDescription = "")
+                Box(modifier = Modifier
+                    .background(Color.White)
+                    .size(12.dp)
+                    .clip(CircleShape))
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-                Image(painter = painterResource(id = R.drawable.ic_twitter), contentDescription = "")
+                Box(modifier = Modifier
+                    .background(Color.Gray)
+                    .size(10.dp)
+                    .clip(CircleShape))
             }
-            Spacer(modifier = Modifier.padding(vertical = 4.dp))
-            Text(signupText, color = Color.White)
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ){
+                TextButton(onClick = {  }) {
+                    Text("Skip", color = Color.White)
+                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                }
+                TextButton(onClick = {  }) {
+                    Text("Next", color = Color.White)
+                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                    Image(painter = painterResource(id = R.drawable.ic_next), contentDescription = "")
+                }
+            }
         }
     }
 }
 
 @Composable
 fun MainScreen2() {
-    val emailState = remember{ mutableStateOf(TextFieldValue("anthonyaniobi198@gmail.com")) }
-    val passState = remember {
-        mutableStateOf(TextFieldValue(""))
-    }
     Surface(
         color = Color.White,
         modifier = Modifier
@@ -76,13 +97,18 @@ fun MainScreen2() {
         shape = RoundedCornerShape(60.dp)
             .copy(topEnd = ZeroCornerSize, topStart = ZeroCornerSize)
     ) {
-        Column {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+                ){
             Image(
                 painter = painterResource(id = R.drawable.ic_cleaning),
                 contentDescription = ""
             )
             Spacer(modifier = Modifier.padding(32.dp))
-            
+            Text("Cleaning on Demand", style= MaterialTheme.typography.h6)
+            Spacer(modifier = Modifier.padding(12.dp))
+            Text("Book an appointment in 30 seconds and get on the schedule as early as tomorrow morning. ",
+                style = MaterialTheme.typography.caption, textAlign = TextAlign.Center)
         }
     }
 
